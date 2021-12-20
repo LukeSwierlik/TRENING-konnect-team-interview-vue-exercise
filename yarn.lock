@@ -919,10 +919,36 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
+"@kongponents/kbutton@^6.7.2":
+  version "6.7.2"
+  resolved "https://registry.yarnpkg.com/@kongponents/kbutton/-/kbutton-6.7.2.tgz#3fa2f9c29cd9d4b0cc4e4c59065d670833ad4f4d"
+  integrity sha512-2v3NWicP2geDbNP8O4AmBxS3oT43gBdtYH171axl/QE32QOMdU9bUnpxNuVZeUz+MK0rUh4jZXBo6L2VzcEJdw==
+  dependencies:
+    "@kongponents/kicon" "^6.7.2"
+
 "@kongponents/kcard@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@kongponents/kcard/-/kcard-1.0.0.tgz#b6c7b7a48d916362ecd350ef9dd5fd7f820bee2e"
   integrity sha512-CRQo/S+pj72fVNaLJpPrLB2p05w+nf3GISrykQG32jVpay2k+EpFWuuiEMR4go8RkeZIY7Hi7kcgiApYSQm3gg==
+
+"@kongponents/kemptystate@^6.7.2":
+  version "6.7.2"
+  resolved "https://registry.yarnpkg.com/@kongponents/kemptystate/-/kemptystate-6.7.2.tgz#3241bc7241003823ab4e46289c6835d4327f6c2e"
+  integrity sha512-vUuMdtUke1EFNVWlN+OQKiIPEBC/Pb2xCYfrEHkMdirGbVWwqGo3UopFp9K4W6XE2M9tELibV2DSwuFgikB+XA==
+  dependencies:
+    "@kongponents/kbutton" "^6.7.2"
+
+"@kongponents/kicon@^6.7.2":
+  version "6.7.2"
+  resolved "https://registry.yarnpkg.com/@kongponents/kicon/-/kicon-6.7.2.tgz#ffeacc57c1391b5a76c2ad6e27faead7118e5ccb"
+  integrity sha512-skSDUSXgkfzwNGHN9WXR1zxv7sB+HMGEZ4iChy6iPPEvThSnso6aIlIeKlbKpfZTRCOseRdeQUy/pgXeW2S9SQ==
+
+"@kongponents/kskeleton@^6.7.2":
+  version "6.7.2"
+  resolved "https://registry.yarnpkg.com/@kongponents/kskeleton/-/kskeleton-6.7.2.tgz#eaee35c45942510c97c0d904a3710956320bee48"
+  integrity sha512-JucBzXWWkr3huySyO4/MiEsPPFXubFub64JoYxyWIV9LBvknMSibkyyLO/UaWyPl37p7/M6YUi+4EGTYW9nVCA==
+  dependencies:
+    "@kongponents/kicon" "^6.7.2"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

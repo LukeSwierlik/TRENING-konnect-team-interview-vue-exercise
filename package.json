@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@kongponents/kcard": "^1.0.0",
+    "@kongponents/kemptystate": "^6.7.2",
+    "@kongponents/kskeleton": "^6.7.2",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "eslint-plugin-only-warn": "^1.0.2",
@@ -53,7 +55,6 @@
     "chai": "^4.1.2"
   },
   "engines": {
-    "node": ">=10.15.1 <=12.6.0",
     "npm": ">=5.0.0"
   }
 }
