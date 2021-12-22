@@ -41,52 +41,43 @@
 <script lang="ts">
 import Vue from 'vue';
 
-const ITEM_COUNT = 12;
-
 export default Vue.extend({
   name: 'Pagination',
   props: {
+    page: {
+      type: Number,
+      required: true,
+      default: 1
+    },
     servicesLength: {
       type: Number,
       required: true,
       default: 1
+    },
+    isFirstPage: {
+      type: Boolean
+    },
+    pagingDirections: {
+      type: String
+    },
+    isLastPage: {
+      type: Boolean
     }
   },
   data () {
     return {
-      page: 1,
       publicPath: process.env.BASE_URL
     };
   },
-  computed: {
-    pagingFrom (): number {
-      return ITEM_COUNT * (this.page - 1);
-    },
-    pagingTo (): number {
-      return ITEM_COUNT * this.page;
-    },
-    pagingDirections (): string {
-      return `${this.pagingFrom + 1} - ${Math.min(
-        this.pagingTo,
-        this.servicesLength
-      )} of ${this.servicesLength}`;
-    },
-    isFirstPage (): boolean {
-      return this.page === 1;
-    },
-    isLastPage (): boolean {
-      return ITEM_COUNT * this.page >= this.servicesLength;
-    }
-  },
   methods: {
     nextPage () {
-      if (!this.isLastPage) this.page += 1;
+      this.$emit('nextPage');
     },
     previousPage () {
-      if (!this.isFirstPage) this.page -= 1;
+      this.$emit('previousPage');
     },
     resetPage () {
-      this.page = 1;
+      this.$emit('resetPage');
     }
   }
 });
