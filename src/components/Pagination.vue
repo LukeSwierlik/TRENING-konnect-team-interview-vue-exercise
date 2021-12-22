@@ -1,7 +1,9 @@
 <template>
   <section class="paging">
     <button
+      name="previous"
       class="arrow"
+      data-cy="btnPreviousPage"
       :disabled="isFirstPage"
       @click="previousPage"
     >
@@ -22,6 +24,8 @@
 
     <button
       class="arrow"
+      name="next"
+      data-cy="btnNextPage"
       :disabled="isLastPage"
       @click="nextPage"
     >
@@ -82,7 +86,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped>
-
-</style>

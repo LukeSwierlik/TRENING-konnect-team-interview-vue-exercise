@@ -6,7 +6,10 @@
       </h1>
 
       <div>
-        <button class="action">
+        <button
+          class="action"
+          data-cy="btnAddNewService"
+        >
           Add new service
         </button>
       </div>
@@ -14,6 +17,8 @@
 
     <div class="search-bar">
       <input
+        name="searchTerm"
+        data-cy="searchBar"
         v-model="searchTerm"
         placeholder="search term"
       >
