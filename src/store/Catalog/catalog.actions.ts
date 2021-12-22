@@ -15,6 +15,6 @@ export const catalogActions = {
       }).catch(error => {
         context.commit(MutationTypes.LOADED_SERVICES_FAILURE, error as Error);
       });
-    }, 3000);
+    }, 5000);
   }
 };

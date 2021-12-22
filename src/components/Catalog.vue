@@ -86,19 +86,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-.skeleton-card {
-  $grandpaTag: &;
-
-  &-wrapper {
-    gap: 1rem;
-    justify-content: space-between;
-
-    #{$grandpaTag}-column {
-      padding: 0;
-      width: var(--KSkeletonCardWidth, calc(33% - 1rem));
-    }
-  }
-}
+@import '../assets/spinner';
 
 .services {
   margin-top: 2rem;

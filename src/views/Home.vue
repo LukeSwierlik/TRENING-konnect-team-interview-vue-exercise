@@ -7,12 +7,16 @@
       :services="listServices"
       :catalog-state-view="catalogStateView"
     />
+    <Pagination
+      :services-length="listServices.length"
+    />
   </main>
 </template>
 
 <script lang="ts">
 
 import Hero from '@/components/Hero.vue';
+import Pagination from '@/components/Pagination.vue';
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import Catalog from '../components/Catalog.vue';
@@ -20,22 +24,23 @@ import Catalog from '../components/Catalog.vue';
 export default Vue.extend({
   name: 'Home',
   components: {
+    Pagination,
     Hero,
     Catalog
   },
   data () {
     return {
       listServices: []
-    }
+    };
   },
   computed: {
-    ...mapGetters('CatalogModule', ['services', 'catalogStateView', 'filterServices']),
+    ...mapGetters('CatalogModule', ['services', 'catalogStateView', 'filterServices'])
   },
   watch: {
     searchTerm (val) {
       console.log(val);
     },
-    services(newValue) {
+    services (newValue) {
       this.listServices = newValue;
     }
   },
