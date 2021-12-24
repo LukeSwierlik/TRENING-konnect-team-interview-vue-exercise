@@ -38,10 +38,30 @@
       />
     </div>
 
-    <div v-else-if="catalogStateView === viewState.EMPTY">
-      <KEmptyState cta-is-hidden>
+    <div
+      v-else-if="catalogStateView === viewState.EMPTY"
+    >
+      <KEmptyState
+        cta-is-hidden
+        data-cy="EmptyState">
         <template #title>
           No Content
+        </template>
+        <template #message>
+          You do not have any content here 😉️
+        </template>
+      </KEmptyState>
+    </div>
+
+    <div
+      v-else-if="catalogStateView === viewState.ERROR"
+    >
+      <KEmptyState
+        cta-is-hidden
+        data-cy="ErrorState"
+      >
+        <template #title>
+          Something is wrong
         </template>
         <template #message>
           You do not have any content here 😉️
@@ -86,7 +106,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import '../assets/spinner';
+@import '../assets/skeleton';
 
 .services {
   margin-top: 2rem;

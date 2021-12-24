@@ -1,0 +1,14 @@
+.skeleton-card {
+    $grandpaTag: &;
+
+    &-wrapper {
+        width: inherit !important;
+        margin: 0 -1rem;
+
+        #{$grandpaTag}-column {
+            padding: 0 1rem;
+            width: var(--KSkeletonCardWidth, 33.3333333%);
+            box-sizing: border-box;
+        }
+    }
+}

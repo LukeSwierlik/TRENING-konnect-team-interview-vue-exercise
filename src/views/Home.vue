@@ -23,10 +23,10 @@
 
 import Hero from '@/components/Hero.vue';
 import Pagination from '@/components/Pagination.vue';
-import { Service } from '@/shared/interfaces/catalog.interfaces';
+import {CatalogStateView, Service} from '@/shared/interfaces/catalog.interfaces';
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
-import Catalog from '../components/Catalog.vue';
+import {mapActions, mapGetters} from 'vuex';
+import Catalog from '../components/Services.vue';
 
 const ITEM_COUNT = 12;
 
@@ -44,7 +44,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('CatalogModule', ['services', 'catalogStateView', 'filterServices']),
+    ...mapGetters('ServicesModule', ['services', 'catalogStateView', 'filterServices']),
     pagingFrom (): number {
       return ITEM_COUNT * (this.page - 1);
     },
@@ -70,12 +70,20 @@ export default Vue.extend({
     this.fetchServicesActions();
   },
   methods: {
-    ...mapActions('CatalogModule', ['fetchServicesActions']),
+    ...mapActions('ServicesModule', ['fetchServicesActions', 'setStatus']),
     searchValueParent (value: string) {
       this.listServices = this.filterServices(value);
     },
     displayedServices (): Service[] {
-      return this.listServices.slice(this.pagingFrom, this.pagingTo);
+      const services = this.listServices.slice(this.pagingFrom, this.pagingTo);
+
+      if (services.length) {
+        this.setStatus(CatalogStateView.CATALOG);
+      } else {
+        this.setStatus(CatalogStateView.EMPTY);
+      }
+
+      return services;
     },
     pagingDirections (): string {
       return `${this.pagingFrom + 1} - ${Math.min(
@@ -84,14 +92,14 @@ export default Vue.extend({
       )} of ${this.listServices.length}`;
     },
     nextPage () {
-      if (!this.isLastPage) this.page += 1
+      if (!this.isLastPage) this.page += 1;
     },
     previousPage () {
-      if (!this.isFirstPage) this.page -= 1
+      if (!this.isFirstPage) this.page -= 1;
     },
     resetPage () {
-      this.page = 1
-    },
+      this.page = 1;
+    }
   }
 });
 </script>

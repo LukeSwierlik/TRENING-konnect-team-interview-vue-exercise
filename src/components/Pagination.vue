@@ -18,7 +18,8 @@
         "
       >
     </button>
-    <div class="directions">
+
+    <div class="directions" data-cy="directions">
       {{ pagingDirections }}
     </div>
 

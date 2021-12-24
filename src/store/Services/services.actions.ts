@@ -1,11 +1,8 @@
-import { MutationTypes } from '@/store/Catalog/catalog.mutations';
-import { fetchServices } from '@/store/Catalog/catalog.service';
+import { MutationTypes } from '@/store/Services/services.mutations';
+import { fetchServices } from '@/store/Services/services.service';
+import {CatalogStateView} from "@/shared/interfaces/catalog.interfaces";
 
-export enum ActionTypes {
-  FETCH_SERVICES = 'FETCH_SERVICES',
-}
-
-export const catalogActions = {
+export const servicesActions = {
   fetchServicesActions (context): void {
     context.commit(MutationTypes.LOADED_SERVICES);
 
@@ -16,5 +13,8 @@ export const catalogActions = {
         context.commit(MutationTypes.LOADED_SERVICES_FAILURE, error as Error);
       });
     }, 500);
+  },
+  setStatus (context, status: CatalogStateView): void {
+    context.commit(MutationTypes.SET_STATUS, status);
   }
 };
