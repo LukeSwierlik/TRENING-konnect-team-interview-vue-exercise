@@ -16,6 +16,7 @@
     "@kongponents/kskeleton": "^6.7.2",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "cypress": "9.2.0",
     "eslint-plugin-only-warn": "^1.0.2",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
