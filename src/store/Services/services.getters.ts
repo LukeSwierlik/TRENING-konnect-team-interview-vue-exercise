@@ -1,7 +1,5 @@
 import { ServicesState, ServicesStateView, Service } from '@/shared/interfaces/catalog.interfaces';
 
-const ITEM_COUNT = 12;
-
 export const servicesGetters = {
   services (state: ServicesState): Service[] {
     return state.services;
@@ -9,25 +7,23 @@ export const servicesGetters = {
   catalogStateView (state: ServicesState): ServicesStateView {
     return state.servicesStateView;
   },
-  filterServices: (state: ServicesState) => (searchTerm?: string): Service[] => {
+  filterServices: ({ services }: ServicesState) => (searchTerm?: string): Service[] => {
     if (!searchTerm) {
-      return state.services;
+      return services;
     }
 
-    const result = state.services.filter(service => {
+    return services.filter(service => {
       return service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         service.description.toLowerCase().includes(searchTerm.toLowerCase());
     });
-
-    return result;
   },
-  paginationDirections:(state: ServicesState) => (listServices: Service[]): string =>{
-    const { services, pagination } = state;
+  paginationDirections:(state: ServicesState) => (listServicesLength: number): string =>{
+    const { from, to } = state.pagination;
 
-    return `${pagination.from + 1} - ${Math.min(
-      pagination.to,
-      listServices.length
-    )} of ${listServices.length}`;
+    return `${from + 1} - ${Math.min(
+      to,
+      listServicesLength
+    )} of ${listServicesLength}`;
   },
   currentPage (state: ServicesState): number {
     return state.pagination.currentPage;
@@ -35,10 +31,14 @@ export const servicesGetters = {
   isFirstPageGetter (state: ServicesState): boolean {
     return state.pagination.currentPage === 1;
   },
-  isLastPageGetter:(state: ServicesState) => (listServices: Service[]): boolean => {
-    return ITEM_COUNT * state.pagination.currentPage >= listServices.length;
+  isLastPageGetter:({ pagination } : ServicesState) => (listServices: Service[]): boolean => {
+    const {currentPage, itemCount} = pagination;
+
+    return itemCount * currentPage >= listServices.length;
   },
   displayedListServices: (state: ServicesState) => (listServices: Service[]): Service[] => {
-    return listServices.slice(state.pagination.from, state.pagination.to);
+    const { from, to } = state.pagination;
+
+    return listServices.slice(from, to);
   }
 };

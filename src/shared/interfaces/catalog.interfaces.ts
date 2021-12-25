@@ -24,5 +24,6 @@ export interface ServicesState {
     from: number;
     to: number;
     currentPage: number;
+    itemCount: number;
   }
 }

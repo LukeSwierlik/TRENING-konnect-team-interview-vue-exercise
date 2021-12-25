@@ -6,6 +6,7 @@ export const servicesState: ServicesState = {
   pagination: {
     currentPage: 1,
     from: 0,
-    to: 0
+    to: 12,
+    itemCount: 12
   }
 };

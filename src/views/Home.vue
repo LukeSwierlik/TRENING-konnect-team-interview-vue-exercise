@@ -11,7 +11,7 @@
     <Pagination
       :is-first-page="isFirstPageGetter"
       :is-last-page="isLastPageGetter(this.listServices)"
-      :paging-directions="paginationDirections(listServices)"
+      :paging-directions="paginationDirections(listServices.length)"
       :page="currentPage"
       :services-length="listServices.length"
       @nextPage="nextPage()"
@@ -52,7 +52,7 @@ export default Vue.extend({
       'isFirstPageGetter',
       'isLastPageGetter',
       'displayedListServices'
-    ]),
+    ])
   },
   watch: {
     services (newValue) {
@@ -75,7 +75,6 @@ export default Vue.extend({
       this.resetPagination();
     },
     displayedServices (): Service[] {
-      console.log('this.listServices', this.listServices);
       return this.displayedListServices(this.listServices);
     },
     nextPage () {

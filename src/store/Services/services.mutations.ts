@@ -12,12 +12,14 @@ export enum MutationTypes {
   RESET_PAGINATION = '[Services] Reset Pagination'
 }
 
-const ITEM_COUNT = 12;
-
 export type ServicesMutations<S = ServicesState> = {
   [MutationTypes.LOADED_SERVICES] (state: S): void,
   [MutationTypes.LOADED_SERVICES_SUCCESS](state: S, payload: Service[]): void,
   [MutationTypes.LOADED_SERVICES_FAILURE](state: S, error: Error): void,
+  [MutationTypes.SET_STATUS](state: S, status: ServicesStateView): void,
+  [MutationTypes.NEXT_PAGE](state: ServicesState, servicesLength: number): void,
+  [MutationTypes.PREVIOUS_PAGE](state: ServicesState): void,
+  [MutationTypes.RESET_PAGINATION](state: ServicesState): void,
 }
 
 export const catalogMutations: MutationTree<ServicesState> & ServicesMutations = {
@@ -27,11 +29,6 @@ export const catalogMutations: MutationTree<ServicesState> & ServicesMutations =
   [MutationTypes.LOADED_SERVICES_SUCCESS] (state: ServicesState, services: Service[]): void {
     if (services.length) {
       state.servicesStateView = ServicesStateView.CATALOG;
-      state.pagination = {
-        from: 0,
-        to: ITEM_COUNT,
-        currentPage: 1
-      };
     } else {
       state.servicesStateView = ServicesStateView.EMPTY;
     }
@@ -47,29 +44,33 @@ export const catalogMutations: MutationTree<ServicesState> & ServicesMutations =
     state.servicesStateView = status;
   },
   [MutationTypes.NEXT_PAGE] (state: ServicesState, servicesLength: number): void {
-    const isLastPage = ITEM_COUNT * state.pagination.currentPage >= servicesLength;
-    console.log('isLastPage', isLastPage);
+    const { itemCount, currentPage } = state.pagination;
+    const isLastPage = itemCount * currentPage >= servicesLength;
+    const incrementCurrentPage = state.pagination.currentPage += 1;
 
     if (!isLastPage) {
-      state.pagination.currentPage += 1;
-      state.pagination.from = ITEM_COUNT * (state.pagination.currentPage - 1);
-      state.pagination.to = ITEM_COUNT * state.pagination.currentPage;
+      state.pagination.currentPage = incrementCurrentPage;
+      state.pagination.from = itemCount * (incrementCurrentPage - 1);
+      state.pagination.to = itemCount * incrementCurrentPage;
     }
   },
   [MutationTypes.PREVIOUS_PAGE] (state: ServicesState): void {
-    const isFirstPage = state.pagination.currentPage === 1;
+    const { itemCount, currentPage} = state.pagination;
+    const isFirstPage = currentPage === 1;
+    const decrementCurrentPage = state.pagination.currentPage -= 1;
 
     if (!isFirstPage) {
-      state.pagination.currentPage -= 1;
-      state.pagination.from = ITEM_COUNT * (state.pagination.currentPage - 1);
-      state.pagination.to = ITEM_COUNT * state.pagination.currentPage;
+      state.pagination.currentPage = decrementCurrentPage;
+      state.pagination.from = itemCount * (decrementCurrentPage - 1);
+      state.pagination.to = itemCount * decrementCurrentPage;
     }
   },
   [MutationTypes.RESET_PAGINATION] (state: ServicesState): void {
     state.pagination = {
+      currentPage: 1,
       from: 0,
-      to: ITEM_COUNT,
-      currentPage: 1
+      to: 12,
+      itemCount: 12
     };
   }
 };

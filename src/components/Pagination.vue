@@ -1,5 +1,5 @@
 <template>
-  <section class="paging">
+  <section class="pagination">
     <button
       name="previous"
       class="arrow"
@@ -80,10 +80,50 @@ export default Vue.extend({
     },
     previousPage () {
       this.$emit('previousPage');
-    },
-    resetPage () {
-      this.$emit('resetPage');
     }
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+
+  .arrow {
+    display: block;
+    background: none;
+    border: none;
+
+    &:active {
+      transform: translateY(1px);
+      filter: saturate(150%);
+      cursor: pointer;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:disabled {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .reversed {
+      -webkit-transform: scaleX(-1);
+      transform: scaleX(-1);
+    }
+  }
+
+  .directions {
+    padding: 0 2rem;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.45);
+    opacity: 0.7;
+  }
+}
+</style>
