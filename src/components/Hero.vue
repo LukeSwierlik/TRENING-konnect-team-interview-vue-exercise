@@ -19,12 +19,12 @@
       class="search-bar"
     >
       <input
-        @input="debounceInput"
         class="inputSearchBar"
         name="searchTerm"
         data-cy="searchBar"
         placeholder="search term"
         :disabled="servicesStateView === viewState.ERROR"
+        @input="debounceInput"
       >
     </div>
   </section>
@@ -51,11 +51,11 @@ export default Vue.extend({
       viewState: ServicesStateView
     };
   },
-  created() {
+  created () {
     this.debounceInput = Debounce(this.debounceInput, 500);
   },
   methods: {
-    debounceInput(e) {
+    debounceInput (e) {
       this.searchServices(e.target.value);
     }
   }
@@ -100,24 +100,37 @@ export default Vue.extend({
 }
 
 .search-bar {
-  margin-top: 24px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   text-align: left;
+  column-gap: 2rem;
+  margin: 2rem 0;
+
+  @media (max-width: 1000px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 
   .inputSearchBar {
     background: url(/assets/Magnifying_Glass.svg) no-repeat scroll 10px;
     padding: 10px 10px 10px 34px;
-    width: calc(25% - 44px - 24px);
     font-size: 16px;
     color: rgba(0, 0, 0, 0.45);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 3px;
+    box-sizing: border-box;
+    width: 100%;
 
     &:disabled {
       background-color: #eee;
-    }
-
-    @media (max-width: 1000px) {
-      width: calc(100% - 44px);
     }
   }
 }
