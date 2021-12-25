@@ -22,7 +22,7 @@
         class="inputSearchBar"
         name="searchTerm"
         data-cy="searchBar"
-        placeholder="search term"
+        placeholder="Search"
         :disabled="servicesStateView === viewState.ERROR"
         @input="debounceInput"
       >
@@ -78,18 +78,17 @@ export default Vue.extend({
 
 .title {
   font-weight: bold;
-  font-size: 24px;
-  line-height: 28px;
+  font-size: 1.6rem;
   color: #0a2b66;
 }
 
 .action {
-  padding: 8px 12px;
-  font-size: 16px;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
   color: #ffffff;
   background: #1456cb;
   border: 0;
-  border-radius: 3px;
+  border-radius: 0.3rem;
   cursor: pointer;
 
   &:active {
@@ -120,12 +119,12 @@ export default Vue.extend({
   }
 
   .inputSearchBar {
-    background: url(/assets/Magnifying_Glass.svg) no-repeat scroll 10px;
-    padding: 10px 10px 10px 34px;
-    font-size: 16px;
+    background: url('~@/assets/Magnifying_Glass.svg') no-repeat scroll 0.6rem;
+    padding: 0.5rem 1em 0.5rem 2rem;
+    font-size: 1rem;
     color: rgba(0, 0, 0, 0.45);
     border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
+    border-radius: 0.3rem;
     box-sizing: border-box;
     width: 100%;
 

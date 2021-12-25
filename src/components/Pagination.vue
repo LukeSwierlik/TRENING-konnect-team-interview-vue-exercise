@@ -13,8 +13,8 @@
         width="44px"
         :src="
           isFirstPage
-            ? `${publicPath}assets/Grey-Arrow.svg`
-            : `${publicPath}assets/Active-Arrow.svg`
+            ? `./assets/Grey-Arrow.svg`
+            : `./assets/Active-Arrow.svg`
         "
       >
     </button>
@@ -35,8 +35,8 @@
         width="44px"
         :src="
           isLastPage
-            ? `${publicPath}assets/Grey-Arrow.svg`
-            : `${publicPath}assets/Active-Arrow.svg`
+            ? `./assets/Grey-Arrow.svg`
+            : `./assets/Active-Arrow.svg`
         "
       >
     </button>

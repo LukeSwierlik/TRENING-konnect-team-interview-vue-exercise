@@ -1,46 +1,32 @@
 <template>
-  <header>
-    <div class="nav">
-      <router-link
-        to="/"
-        class="nav-item nav-item-wide"
-      >
-        <img
-          class="logo"
-          height="15px"
-          :src="`${publicPath}assets/Konnect.svg`"
-        >
-      </router-link>
+  <header class="nav">
+    <router-link
+      to="/"
+      class="nav-item nav-item-wide logo"
+    >
       <img
-        class="nav-item"
-        height="20px"
-        width="20px"
-        :src="`${publicPath}assets/Notifications.svg`"
+        class="logoImg"
+        :src="`./assets/Konnect.svg`"
       >
-      <img
-        class="nav-item"
-        height="20px"
-        width="20px"
-        :src="`${publicPath}assets/Help.svg`"
-      >
-      <img
-        class="user nav-item"
-        height="32px"
-        width="32px"
-        :src="`${publicPath}assets/Avatar.png`"
-      >
-    </div>
+    </router-link>
+    <img
+      class="nav-item"
+      :src="`./assets/Notifications.svg`"
+    >
+    <img
+      class="nav-item"
+      :src="`./assets/Help.svg`"
+    >
+    <img
+      class="user nav-item"
+      :src="`./assets/avatar.png`"
+    >
   </header>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'Header',
-  data () {
-    return {
-      publicPath: process.env.BASE_URL
-    };
-  }
 };
 </script>
 
@@ -55,6 +41,8 @@ export default {
 
   &-item {
     display: block;
+    width: 20px;
+    height: 20px;
 
     &-wide {
       margin-right: auto;
@@ -63,10 +51,18 @@ export default {
 
   .logo {
     display: block;
+    height: 15px;
+    width: auto;
+
+    .logoImg {
+      width: 100%;
+    }
   }
 
   .user {
     border-radius: 50%;
+    width: 32px;
+    height: 32px;
   }
 }
 </style>

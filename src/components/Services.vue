@@ -24,7 +24,8 @@
             <div class="card-footer-badge">
               {{ service.versions.length }}
             </div>
-            <b>Versions</b>
+
+            <b class="bold">Versions</b>
           </div>
         </template>
       </KCard>
@@ -184,6 +185,10 @@ export default Vue.extend({
         padding: 0.2rem 0.7rem;
         margin-right: 0.5rem;
       }
+    }
+
+    .bold {
+      font-weight: 500;
     }
   }
 }
