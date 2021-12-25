@@ -15,28 +15,38 @@
       </div>
     </div>
 
-    <div class="search-bar">
+    <div
+      class="search-bar">
       <input
+        v-model="searchTerm"
         name="searchTerm"
         data-cy="searchBar"
-        v-model="searchTerm"
         placeholder="search term"
+        :disabled="catalogStateView === viewState.ERROR"
       >
     </div>
   </section>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropType } from 'vue';
+import { ServicesStateView } from '@/shared/interfaces/catalog.interfaces';
+
+export default Vue.extend({
   name: 'Hero',
   props: {
     searchValue: {
-      type: Function
-    }
+      type: Function,
+    },
+    catalogStateView: {
+      type: String as PropType<ServicesStateView>,
+      default: ServicesStateView.EMPTY
+    },
   },
   data () {
     return {
-      searchTerm: ''
+      searchTerm: '',
+      viewState: ServicesStateView
     };
   },
   watch: {
@@ -45,7 +55,7 @@ export default {
       this.searchValue(val);
     }
   }
-};
+});
 </script>
 
 <style scoped lang="scss">

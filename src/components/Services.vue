@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { CatalogStateView, Service } from '@/shared/interfaces/catalog.interfaces';
+import { ServicesStateView, Service } from '@/shared/interfaces/catalog.interfaces';
 import KCard from '@kongponents/kcard';
 import KEmptyState from '@kongponents/kemptystate';
 import { KSkeleton } from '@kongponents/kskeleton';
@@ -91,15 +91,15 @@ export default Vue.extend({
       default: []
     },
     catalogStateView: {
-      type: String as PropType<CatalogStateView>,
-      default: CatalogStateView.EMPTY
+      type: String as PropType<ServicesStateView>,
+      default: ServicesStateView.EMPTY
     }
   },
   data () {
     return {
       // services: [],
       filteredServices: [],
-      viewState: CatalogStateView
+      viewState: ServicesStateView
     };
   }
 });

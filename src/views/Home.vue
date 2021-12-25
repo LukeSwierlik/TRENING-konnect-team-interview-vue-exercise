@@ -2,18 +2,19 @@
   <main class="container">
     <Hero
       :search-value="searchValueParent"
+      :catalog-state-view="catalogStateView"
     />
     <Catalog
       :services="displayedServices()"
       :catalog-state-view="catalogStateView"
     />
     <Pagination
-      :is-first-page="isFirstPage"
-      :is-last-page="isLastPage"
-      :paging-directions="pagingDirections()"
-      :page="page"
+      :is-first-page="isFirstPageGetter"
+      :is-last-page="isLastPageGetter(this.listServices)"
+      :paging-directions="paginationDirections(listServices)"
+      :page="currentPage"
       :services-length="listServices.length"
-      @nextPage="nextPage"
+      @nextPage="nextPage()"
       @previousPage="previousPage()"
     />
   </main>
@@ -23,12 +24,10 @@
 
 import Hero from '@/components/Hero.vue';
 import Pagination from '@/components/Pagination.vue';
-import {CatalogStateView, Service} from '@/shared/interfaces/catalog.interfaces';
+import { Service } from '@/shared/interfaces/catalog.interfaces';
 import Vue from 'vue';
-import {mapActions, mapGetters} from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import Catalog from '../components/Services.vue';
-
-const ITEM_COUNT = 12;
 
 export default Vue.extend({
   name: 'Home',
@@ -44,24 +43,18 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('ServicesModule', ['services', 'catalogStateView', 'filterServices']),
-    pagingFrom (): number {
-      return ITEM_COUNT * (this.page - 1);
-    },
-    pagingTo (): number {
-      return ITEM_COUNT * this.page;
-    },
-    isFirstPage (): boolean {
-      return this.page === 1;
-    },
-    isLastPage (): boolean {
-      return ITEM_COUNT * this.page >= this.listServices.length;
-    }
+    ...mapGetters('ServicesModule', [
+      'services',
+      'catalogStateView',
+      'filterServices',
+      'paginationDirections',
+      'currentPage',
+      'isFirstPageGetter',
+      'isLastPageGetter',
+      'displayedListServices'
+    ]),
   },
   watch: {
-    searchTerm (val) {
-      console.log(val);
-    },
     services (newValue) {
       this.listServices = newValue;
     }
@@ -70,35 +63,26 @@ export default Vue.extend({
     this.fetchServicesActions();
   },
   methods: {
-    ...mapActions('ServicesModule', ['fetchServicesActions', 'setStatus']),
+    ...mapActions('ServicesModule', [
+      'fetchServicesActions',
+      'setStatus',
+      'nextPagePagination',
+      'previousPagePagination',
+      'resetPagination'
+    ]),
     searchValueParent (value: string) {
       this.listServices = this.filterServices(value);
+      this.resetPagination();
     },
     displayedServices (): Service[] {
-      const services = this.listServices.slice(this.pagingFrom, this.pagingTo);
-
-      if (services.length) {
-        this.setStatus(CatalogStateView.CATALOG);
-      } else {
-        this.setStatus(CatalogStateView.EMPTY);
-      }
-
-      return services;
-    },
-    pagingDirections (): string {
-      return `${this.pagingFrom + 1} - ${Math.min(
-        this.pagingTo,
-        this.listServices.length
-      )} of ${this.listServices.length}`;
+      console.log('this.listServices', this.listServices);
+      return this.displayedListServices(this.listServices);
     },
     nextPage () {
-      if (!this.isLastPage) this.page += 1;
+      this.nextPagePagination(this.listServices.length);
     },
     previousPage () {
-      if (!this.isFirstPage) this.page -= 1;
-    },
-    resetPage () {
-      this.page = 1;
+      this.previousPagePagination();
     }
   }
 });

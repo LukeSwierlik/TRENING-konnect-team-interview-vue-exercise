@@ -9,16 +9,20 @@ export interface Service {
   }[]
 }
 
-export enum CatalogStateView {
+export enum ServicesStateView {
   CATALOG = 'catalog',
   LOADING = 'loading',
   ERROR = 'error',
   EMPTY = 'empty',
 }
 
-export interface CatalogState {
-  catalogStateView: CatalogStateView;
+export interface ServicesState {
+  servicesStateView: ServicesStateView;
   services: Service[],
-  loaded: boolean,
   error?: Error,
+  pagination: {
+    from: number;
+    to: number;
+    currentPage: number;
+  }
 }

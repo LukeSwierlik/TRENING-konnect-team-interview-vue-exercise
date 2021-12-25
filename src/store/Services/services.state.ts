@@ -1,7 +1,11 @@
-import { CatalogState, CatalogStateView } from '@/shared/interfaces/catalog.interfaces';
+import { ServicesState, ServicesStateView } from '@/shared/interfaces/catalog.interfaces';
 
-export const servicesState: CatalogState = {
-  catalogStateView: CatalogStateView.EMPTY,
+export const servicesState: ServicesState = {
+  servicesStateView: ServicesStateView.EMPTY,
   services: [],
-  loaded: true
+  pagination: {
+    currentPage: 1,
+    from: 0,
+    to: 0
+  }
 };
