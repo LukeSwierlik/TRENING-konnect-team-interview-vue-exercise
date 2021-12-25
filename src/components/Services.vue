@@ -1,7 +1,7 @@
 <template>
   <section class="services">
     <div
-      v-if="catalogStateView === viewState.CATALOG"
+      v-if="servicesStateView === viewState.SERVICES"
       class="catalog"
     >
       <KCard
@@ -14,6 +14,7 @@
             {{ service.name }}
           </div>
         </template>
+
         <template slot="body">
           <div class="card-body">
             {{ service.description }}
@@ -23,63 +24,65 @@
             <div class="card-footer-badge">
               {{ service.versions.length }}
             </div>
-            <b>Versions</b>
+
+            <b class="bold">Versions</b>
           </div>
         </template>
       </KCard>
     </div>
 
-    <div
-      v-else-if="catalogStateView === viewState.LOADING"
+    <template
+      v-else-if="servicesStateView === viewState.LOADING"
     >
       <KSkeleton
         type="card"
-        :card-count="9"
+        :card-count="6"
       />
-    </div>
+    </template>
 
-    <div
-      v-else-if="catalogStateView === viewState.EMPTY"
+    <template
+      v-else-if="servicesStateView === viewState.EMPTY"
     >
       <KEmptyState
         cta-is-hidden
         data-cy="EmptyState">
         <template #title>
-          No Content
+          No results
         </template>
+
         <template #message>
-          You do not have any content here 😉️
+          There is no server list, please enter a different phrase or add a new server 😉️
         </template>
       </KEmptyState>
-    </div>
+    </template>
 
-    <div
-      v-else-if="catalogStateView === viewState.ERROR"
+    <template
+      v-else-if="servicesStateView === viewState.ERROR"
     >
       <KEmptyState
         cta-is-hidden
         data-cy="ErrorState"
       >
         <template #title>
-          Something is wrong
+          Something went wrong
         </template>
         <template #message>
-          You do not have any content here 😉️
+          Please try again later 😢
         </template>
       </KEmptyState>
-    </div>
+    </template>
   </section>
 </template>
 
 <script lang="ts">
-import { CatalogStateView, Service } from '@/shared/interfaces/catalog.interfaces';
+import { ServicesStateView, Service } from '@/shared/interfaces/catalog.interfaces';
 import KCard from '@kongponents/kcard';
 import KEmptyState from '@kongponents/kemptystate';
 import { KSkeleton } from '@kongponents/kskeleton';
 import Vue, { PropType } from 'vue';
 
 export default Vue.extend({
-  name: 'Catalog',
+  name: 'Services',
   components: {
     KCard,
     KEmptyState,
@@ -90,16 +93,14 @@ export default Vue.extend({
       type: Array as PropType<Service[]>,
       default: []
     },
-    catalogStateView: {
-      type: String as PropType<CatalogStateView>,
-      default: CatalogStateView.EMPTY
+    servicesStateView: {
+      type: String as PropType<ServicesStateView>,
+      default: ServicesStateView.EMPTY
     }
   },
   data () {
     return {
-      // services: [],
-      filteredServices: [],
-      viewState: CatalogStateView
+      viewState: ServicesStateView
     };
   }
 });
@@ -116,6 +117,9 @@ export default Vue.extend({
   width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  text-align: left;
+  column-gap: 2rem;
+  row-gap: 2rem;
 
   @media (max-width: 1000px) {
     grid-template-columns: repeat(3, 1fr);
@@ -129,10 +133,6 @@ export default Vue.extend({
     grid-template-columns: repeat(1, 1fr);
   }
 
-  text-align: left;
-  column-gap: 2rem;
-  row-gap: 2rem;
-
   .k-card-title {
     width: 100%;
   }
@@ -141,6 +141,7 @@ export default Vue.extend({
     padding: 2rem 1rem;
     min-width: 0;
     min-height: 0;
+    border-radius: 0.4rem;
 
     &:hover {
       border: 1px solid #A6C6FF;
@@ -151,7 +152,6 @@ export default Vue.extend({
       font-size: 1rem;
       font-weight: bold;
       color: #1456cb;
-
       width: 100%;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -159,7 +159,7 @@ export default Vue.extend({
     }
 
     &-body {
-      font-size: 1rem;
+      font-size: 0.85rem;
       color: rgba(0, 0, 0, 0.45);
       line-height: 1.2rem;
       display: -webkit-box;
@@ -168,59 +168,28 @@ export default Vue.extend({
       overflow: hidden;
       word-wrap: break-word;
       text-overflow: ellipsis;
+      height: 80px;
     }
 
     &-footer {
-      margin-top: 18px;
-      font-size: 13px;
+      margin-top: 1rem;
+      font-size: 0.8rem;
 
       &-badge {
         font-weight: bold;
         line-height: 1;
-
-        /* blue-500 */
-
         color: #1456cb;
         display: inline-block;
         border-radius: 40px;
         border: 1px solid #d9e7ff;
-        padding: 2px 10px;
-        margin-right: 5px;
+        padding: 0.2rem 0.7rem;
+        margin-right: 0.5rem;
       }
     }
-  }
-}
 
-.paging {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 48px;
-
-  margin-bottom: 82px;
-
-  .arrow {
-    display: block;
-    background: none;
-    border: none;
-    cursor: pointer;
-
-    &:active {
-      transform: translateY(1px);
-      filter: saturate(150%);
+    .bold {
+      font-weight: 500;
     }
-
-    .reversed {
-      -webkit-transform: scaleX(-1);
-      transform: scaleX(-1);
-    }
-  }
-
-  .directions {
-    padding: 0 48px;
-    font-size: 16px;
-    color: rgba(0, 0, 0, 0.45);
-    opacity: 0.7;
   }
 }
 </style>

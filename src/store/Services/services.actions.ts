@@ -1,6 +1,6 @@
 import { MutationTypes } from '@/store/Services/services.mutations';
-import { fetchServices } from '@/store/Services/services.service';
-import {CatalogStateView} from "@/shared/interfaces/catalog.interfaces";
+import {fetchServices, fetchServicesError} from '@/store/Services/services.service';
+import { ServicesStateView } from '@/shared/interfaces/catalog.interfaces';
 
 export const servicesActions = {
   fetchServicesActions (context): void {
@@ -14,7 +14,16 @@ export const servicesActions = {
       });
     }, 500);
   },
-  setStatus (context, status: CatalogStateView): void {
+  setStatus (context, status: ServicesStateView): void {
     context.commit(MutationTypes.SET_STATUS, status);
+  },
+  nextPageAction (context, servicesLength: number): void {
+    context.commit(MutationTypes.NEXT_PAGE, servicesLength);
+  },
+  previousPageAction (context): void {
+    context.commit(MutationTypes.PREVIOUS_PAGE);
+  },
+  resetPaginationAction (context): void {
+    context.commit(MutationTypes.RESET_PAGINATION);
   }
 };

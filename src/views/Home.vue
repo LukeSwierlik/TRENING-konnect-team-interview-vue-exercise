@@ -1,19 +1,20 @@
 <template>
   <main class="container">
     <Hero
-      :search-value="searchValueParent"
+      :search-services="searchServices"
+      :services-state-view="getServicesStateView"
     />
-    <Catalog
+    <Services
       :services="displayedServices()"
-      :catalog-state-view="catalogStateView"
+      :services-state-view="getServicesStateView"
     />
     <Pagination
-      :is-first-page="isFirstPage"
-      :is-last-page="isLastPage"
-      :paging-directions="pagingDirections()"
-      :page="page"
+      :is-first-page="getIsFirstPage"
+      :is-last-page="getIsLastPage(this.listServices)"
+      :paging-directions="getPaginationDirections(listServices.length)"
+      :page="getCurrentPage"
       :services-length="listServices.length"
-      @nextPage="nextPage"
+      @nextPage="nextPage()"
       @previousPage="previousPage()"
     />
   </main>
@@ -23,82 +24,73 @@
 
 import Hero from '@/components/Hero.vue';
 import Pagination from '@/components/Pagination.vue';
-import {CatalogStateView, Service} from '@/shared/interfaces/catalog.interfaces';
+import {Service, ServicesStateView} from '@/shared/interfaces/catalog.interfaces';
 import Vue from 'vue';
 import {mapActions, mapGetters} from 'vuex';
-import Catalog from '../components/Services.vue';
+import Services from '../components/Services.vue';
 
-const ITEM_COUNT = 12;
+interface HomeData {
+  listServices: Service[];
+}
 
 export default Vue.extend({
   name: 'Home',
   components: {
     Pagination,
     Hero,
-    Catalog
+    Services
   },
-  data () {
+  data (): HomeData {
     return {
-      listServices: [],
-      page: 1
+      listServices: []
     };
   },
   computed: {
-    ...mapGetters('ServicesModule', ['services', 'catalogStateView', 'filterServices']),
-    pagingFrom (): number {
-      return ITEM_COUNT * (this.page - 1);
-    },
-    pagingTo (): number {
-      return ITEM_COUNT * this.page;
-    },
-    isFirstPage (): boolean {
-      return this.page === 1;
-    },
-    isLastPage (): boolean {
-      return ITEM_COUNT * this.page >= this.listServices.length;
-    }
+    ...mapGetters('ServicesModule', [
+      'getServices',
+      'getServicesStateView',
+      'getFilterServices',
+      'getPaginationDirections',
+      'getCurrentPage',
+      'getIsFirstPage',
+      'getIsLastPage',
+      'getListServices'
+    ])
   },
   watch: {
-    searchTerm (val) {
-      console.log(val);
-    },
-    services (newValue) {
-      this.listServices = newValue;
+    getServices (services: Service[]) {
+      this.listServices = services;
     }
   },
   mounted () {
     this.fetchServicesActions();
   },
   methods: {
-    ...mapActions('ServicesModule', ['fetchServicesActions', 'setStatus']),
-    searchValueParent (value: string) {
-      this.listServices = this.filterServices(value);
-    },
-    displayedServices (): Service[] {
-      const services = this.listServices.slice(this.pagingFrom, this.pagingTo);
-
-      if (services.length) {
-        this.setStatus(CatalogStateView.CATALOG);
+    ...mapActions('ServicesModule', [
+      'fetchServicesActions',
+      'nextPageAction',
+      'previousPageAction',
+      'resetPaginationAction',
+      'setStatus'
+    ]),
+    searchServices (value: string): void {
+      this.listServices = this.getFilterServices(value);
+      if (this.listServices.length) {
+        this.setStatus(ServicesStateView.SERVICES);
       } else {
-        this.setStatus(CatalogStateView.EMPTY);
+        this.setStatus(ServicesStateView.EMPTY);
       }
 
-      return services;
+      this.resetPaginationAction();
     },
-    pagingDirections (): string {
-      return `${this.pagingFrom + 1} - ${Math.min(
-        this.pagingTo,
-        this.listServices.length
-      )} of ${this.listServices.length}`;
+    displayedServices (): Service[] {
+      return this.getListServices(this.listServices);
     },
-    nextPage () {
-      if (!this.isLastPage) this.page += 1;
+    nextPage (): void {
+      this.nextPageAction(this.listServices.length);
     },
-    previousPage () {
-      if (!this.isFirstPage) this.page -= 1;
-    },
-    resetPage () {
-      this.page = 1;
+    previousPage (): void {
+      this.previousPageAction();
     }
   }
 });
@@ -110,11 +102,11 @@ export default Vue.extend({
     margin: 0 auto;
 
     @media (max-width: 1000px) {
-        padding: 20px;
+        padding: 2rem;
     }
 
     @media (max-width: 500px) {
-        padding: 10px;
+        padding: 1rem;
     }
 }
 </style>

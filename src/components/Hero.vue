@@ -15,98 +15,122 @@
       </div>
     </div>
 
-    <div class="search-bar">
+    <div
+      class="search-bar"
+    >
       <input
+        class="inputSearchBar"
         name="searchTerm"
         data-cy="searchBar"
-        v-model="searchTerm"
-        placeholder="search term"
+        placeholder="Search"
+        :disabled="servicesStateView === viewState.ERROR"
+        @input="debounceInput"
       >
     </div>
   </section>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropType } from 'vue';
+import { ServicesStateView } from '@/shared/interfaces/catalog.interfaces';
+import Debounce from 'lodash/debounce';
+
+export default Vue.extend({
   name: 'Hero',
   props: {
-    searchValue: {
+    searchServices: {
       type: Function
+    },
+    servicesStateView: {
+      type: String as PropType<ServicesStateView>,
+      default: ServicesStateView.EMPTY
     }
   },
   data () {
     return {
-      searchTerm: ''
+      viewState: ServicesStateView
     };
   },
-  watch: {
-    searchTerm (val) {
-      console.log(val);
-      this.searchValue(val);
+  created () {
+    this.debounceInput = Debounce(this.debounceInput, 500);
+  },
+  methods: {
+    debounceInput (e) {
+      this.searchServices(e.target.value);
     }
   }
-};
+});
 </script>
 
 <style scoped lang="scss">
 .hero {
-  margin-top: 60px;
+  margin-top: 3rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
 
-@media (max-width: 1000px) {
-  margin-top: 20px;
-}
-@media (max-width: 500px) {
-  flex-direction: column;
-}
+  @media (max-width: 1000px) {
+    margin-top: 1rem;
+  }
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 
 .title {
   font-weight: bold;
-  font-size: 24px;
-  line-height: 28px;
-
+  font-size: 1.6rem;
   color: #0a2b66;
 }
 
 .action {
-  padding: 8px 12px;
-  font-size: 16px;
-
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
   color: #ffffff;
-
   background: #1456cb;
   border: 0;
-  border-radius: 3px;
-
+  border-radius: 0.3rem;
   cursor: pointer;
 
-&:active {
-   transform: translateY(1px);
-   filter: saturate(150%);
- }
-}
+  &:active {
+     transform: translateY(1px);
+     filter: saturate(150%);
+   }
+  }
 }
 
 .search-bar {
-  margin-top: 24px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   text-align: left;
+  column-gap: 2rem;
+  margin: 2rem 0;
 
-input {
-  background: url(/assets/Magnifying_Glass.svg) no-repeat scroll 10px;
-  padding: 10px 10px 10px 34px;
-  width: calc(25% - 44px - 24px);
+  @media (max-width: 1000px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
-@media (max-width: 1000px) {
-  width: calc(100% - 44px);
-}
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-font-size: 16px;
-color: rgba(0, 0, 0, 0.45);
+  @media (max-width: 500px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 
-border: 1px solid rgba(0, 0, 0, 0.1);
-border-radius: 3px;
-}
+  .inputSearchBar {
+    background: url('~@/assets/Magnifying_Glass.svg') no-repeat scroll 0.6rem;
+    padding: 0.5rem 1em 0.5rem 2rem;
+    font-size: 1rem;
+    color: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    width: 100%;
+
+    &:disabled {
+      background-color: #eee;
+    }
+  }
 }
 </style>

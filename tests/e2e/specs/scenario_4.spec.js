@@ -1,4 +1,4 @@
-describe('Scenario 4', () => {
+describe('Scenario 4 - when user wrote strange phrase, should see EmptyState', () => {
   before(() => {
     cy.loadedServices();
   });
@@ -9,6 +9,10 @@ describe('Scenario 4', () => {
 
   it('check length items', () => {
     cy.get('.kong-card.card.border').should('have.length', 0);
+  });
+
+  it('check empty state', () => {
+    cy.get('[data-cy="EmptyState"]').contains('No results');
   });
 
   it('check status pagination', () => {
