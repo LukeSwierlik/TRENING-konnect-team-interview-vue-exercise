@@ -19,7 +19,7 @@
       class="search-bar"
     >
       <input
-        v-model="searchTerm"
+        @input="debounceInput"
         class="inputSearchBar"
         name="searchTerm"
         data-cy="searchBar"
@@ -33,6 +33,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { ServicesStateView } from '@/shared/interfaces/catalog.interfaces';
+import Debounce from 'lodash/debounce';
 
 export default Vue.extend({
   name: 'Hero',
@@ -47,13 +48,15 @@ export default Vue.extend({
   },
   data () {
     return {
-      searchTerm: '',
       viewState: ServicesStateView
     };
   },
-  watch: {
-    searchTerm (value: string) {
-      this.searchServices(value);
+  created() {
+    this.debounceInput = Debounce(this.debounceInput, 500);
+  },
+  methods: {
+    debounceInput(e) {
+      this.searchServices(e.target.value);
     }
   }
 });
