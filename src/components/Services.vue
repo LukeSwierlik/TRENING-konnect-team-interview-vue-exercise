@@ -1,7 +1,7 @@
 <template>
   <section class="services">
     <div
-      v-if="catalogStateView === viewState.CATALOG"
+      v-if="servicesStateView === viewState.SERVICES"
       class="catalog"
     >
       <KCard
@@ -14,6 +14,7 @@
             {{ service.name }}
           </div>
         </template>
+
         <template slot="body">
           <div class="card-body">
             {{ service.description }}
@@ -29,45 +30,46 @@
       </KCard>
     </div>
 
-    <div
-      v-else-if="catalogStateView === viewState.LOADING"
+    <template
+      v-else-if="servicesStateView === viewState.LOADING"
     >
       <KSkeleton
         type="card"
-        :card-count="9"
+        :card-count="6"
       />
-    </div>
+    </template>
 
-    <div
-      v-else-if="catalogStateView === viewState.EMPTY"
+    <template
+      v-else-if="servicesStateView === viewState.EMPTY"
     >
       <KEmptyState
         cta-is-hidden
         data-cy="EmptyState">
         <template #title>
-          No Content
+          No results
         </template>
+
         <template #message>
-          You do not have any content here 😉️
+          There is no server list, please enter a different phrase or add a new server 😉️
         </template>
       </KEmptyState>
-    </div>
+    </template>
 
-    <div
-      v-else-if="catalogStateView === viewState.ERROR"
+    <template
+      v-else-if="servicesStateView === viewState.ERROR"
     >
       <KEmptyState
         cta-is-hidden
         data-cy="ErrorState"
       >
         <template #title>
-          Something is wrong
+          Something went wrong
         </template>
         <template #message>
-          You do not have any content here 😉️
+          Please try again later 😢
         </template>
       </KEmptyState>
-    </div>
+    </template>
   </section>
 </template>
 
@@ -79,7 +81,7 @@ import { KSkeleton } from '@kongponents/kskeleton';
 import Vue, { PropType } from 'vue';
 
 export default Vue.extend({
-  name: 'Catalog',
+  name: 'Services',
   components: {
     KCard,
     KEmptyState,
@@ -90,15 +92,13 @@ export default Vue.extend({
       type: Array as PropType<Service[]>,
       default: []
     },
-    catalogStateView: {
+    servicesStateView: {
       type: String as PropType<ServicesStateView>,
       default: ServicesStateView.EMPTY
     }
   },
   data () {
     return {
-      // services: [],
-      filteredServices: [],
       viewState: ServicesStateView
     };
   }

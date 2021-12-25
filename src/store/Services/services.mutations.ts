@@ -28,7 +28,7 @@ export const catalogMutations: MutationTree<ServicesState> & ServicesMutations =
   },
   [MutationTypes.LOADED_SERVICES_SUCCESS] (state: ServicesState, services: Service[]): void {
     if (services.length) {
-      state.servicesStateView = ServicesStateView.CATALOG;
+      state.servicesStateView = ServicesStateView.SERVICES;
     } else {
       state.servicesStateView = ServicesStateView.EMPTY;
     }

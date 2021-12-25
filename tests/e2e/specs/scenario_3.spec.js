@@ -1,4 +1,4 @@
-describe('Scenario 3', () => {
+describe('Scenario 3 - when user wrote phrase, should see filtered list', () => {
   before(() => {
     cy.loadedServices();
   });

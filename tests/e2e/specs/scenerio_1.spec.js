@@ -1,4 +1,4 @@
-describe('Scenario 1', () => {
+describe('Scenario 1 - check pagination -> next', () => {
   before(() => {
     cy.loadedServices();
   });

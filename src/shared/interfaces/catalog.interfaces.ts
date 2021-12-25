@@ -10,7 +10,7 @@ export interface Service {
 }
 
 export enum ServicesStateView {
-  CATALOG = 'catalog',
+  SERVICES = 'catalog',
   LOADING = 'loading',
   ERROR = 'error',
   EMPTY = 'empty',

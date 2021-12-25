@@ -1,18 +1,18 @@
 <template>
   <main class="container">
     <Hero
-      :search-value="searchValueParent"
-      :catalog-state-view="catalogStateView"
+      :search-services="searchServices"
+      :services-state-view="getServicesStateView"
     />
-    <Catalog
+    <Services
       :services="displayedServices()"
-      :catalog-state-view="catalogStateView"
+      :services-state-view="getServicesStateView"
     />
     <Pagination
-      :is-first-page="isFirstPageGetter"
-      :is-last-page="isLastPageGetter(this.listServices)"
-      :paging-directions="paginationDirections(listServices.length)"
-      :page="currentPage"
+      :is-first-page="getIsFirstPage"
+      :is-last-page="getIsLastPage(this.listServices)"
+      :paging-directions="getPaginationDirections(listServices.length)"
+      :page="getCurrentPage"
       :services-length="listServices.length"
       @nextPage="nextPage()"
       @previousPage="previousPage()"
@@ -24,39 +24,42 @@
 
 import Hero from '@/components/Hero.vue';
 import Pagination from '@/components/Pagination.vue';
-import { Service } from '@/shared/interfaces/catalog.interfaces';
+import {Service, ServicesStateView} from '@/shared/interfaces/catalog.interfaces';
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
-import Catalog from '../components/Services.vue';
+import {mapActions, mapGetters} from 'vuex';
+import Services from '../components/Services.vue';
+
+interface HomeData {
+  listServices: Service[];
+}
 
 export default Vue.extend({
   name: 'Home',
   components: {
     Pagination,
     Hero,
-    Catalog
+    Services
   },
-  data () {
+  data (): HomeData {
     return {
-      listServices: [],
-      page: 1
+      listServices: []
     };
   },
   computed: {
     ...mapGetters('ServicesModule', [
-      'services',
-      'catalogStateView',
-      'filterServices',
-      'paginationDirections',
-      'currentPage',
-      'isFirstPageGetter',
-      'isLastPageGetter',
-      'displayedListServices'
+      'getServices',
+      'getServicesStateView',
+      'getFilterServices',
+      'getPaginationDirections',
+      'getCurrentPage',
+      'getIsFirstPage',
+      'getIsLastPage',
+      'getListServices'
     ])
   },
   watch: {
-    services (newValue) {
-      this.listServices = newValue;
+    getServices (services: Service[]) {
+      this.listServices = services;
     }
   },
   mounted () {
@@ -65,23 +68,29 @@ export default Vue.extend({
   methods: {
     ...mapActions('ServicesModule', [
       'fetchServicesActions',
-      'setStatus',
-      'nextPagePagination',
-      'previousPagePagination',
-      'resetPagination'
+      'nextPageAction',
+      'previousPageAction',
+      'resetPaginationAction',
+      'setStatus'
     ]),
-    searchValueParent (value: string) {
-      this.listServices = this.filterServices(value);
-      this.resetPagination();
+    searchServices (value: string): void {
+      this.listServices = this.getFilterServices(value);
+      if (this.listServices.length) {
+        this.setStatus(ServicesStateView.SERVICES);
+      } else {
+        this.setStatus(ServicesStateView.EMPTY);
+      }
+
+      this.resetPaginationAction();
     },
     displayedServices (): Service[] {
-      return this.displayedListServices(this.listServices);
+      return this.getListServices(this.listServices);
     },
-    nextPage () {
-      this.nextPagePagination(this.listServices.length);
+    nextPage (): void {
+      this.nextPageAction(this.listServices.length);
     },
-    previousPage () {
-      this.previousPagePagination();
+    previousPage (): void {
+      this.previousPageAction();
     }
   }
 });
@@ -93,11 +102,11 @@ export default Vue.extend({
     margin: 0 auto;
 
     @media (max-width: 1000px) {
-        padding: 20px;
+        padding: 2rem;
     }
 
     @media (max-width: 500px) {
-        padding: 10px;
+        padding: 1rem;
     }
 }
 </style>

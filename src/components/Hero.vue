@@ -16,13 +16,15 @@
     </div>
 
     <div
-      class="search-bar">
+      class="search-bar"
+    >
       <input
         v-model="searchTerm"
+        class="inputSearchBar"
         name="searchTerm"
         data-cy="searchBar"
         placeholder="search term"
-        :disabled="catalogStateView === viewState.ERROR"
+        :disabled="servicesStateView === viewState.ERROR"
       >
     </div>
   </section>
@@ -35,13 +37,13 @@ import { ServicesStateView } from '@/shared/interfaces/catalog.interfaces';
 export default Vue.extend({
   name: 'Hero',
   props: {
-    searchValue: {
-      type: Function,
+    searchServices: {
+      type: Function
     },
-    catalogStateView: {
+    servicesStateView: {
       type: String as PropType<ServicesStateView>,
       default: ServicesStateView.EMPTY
-    },
+    }
   },
   data () {
     return {
@@ -50,9 +52,8 @@ export default Vue.extend({
     };
   },
   watch: {
-    searchTerm (val) {
-      console.log(val);
-      this.searchValue(val);
+    searchTerm (value: string) {
+      this.searchServices(value);
     }
   }
 });
@@ -99,7 +100,7 @@ export default Vue.extend({
   margin-top: 24px;
   text-align: left;
 
-  input {
+  .inputSearchBar {
     background: url(/assets/Magnifying_Glass.svg) no-repeat scroll 10px;
     padding: 10px 10px 10px 34px;
     width: calc(25% - 44px - 24px);
@@ -107,6 +108,10 @@ export default Vue.extend({
     color: rgba(0, 0, 0, 0.45);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 3px;
+
+    &:disabled {
+      background-color: #eee;
+    }
 
     @media (max-width: 1000px) {
       width: calc(100% - 44px);

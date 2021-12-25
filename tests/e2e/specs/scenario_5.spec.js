@@ -1,4 +1,4 @@
-describe('Scenario 5', () => {
+describe('Scenario 5 - when user clear searches, should see initial list', () => {
   before(() => {
     cy.loadedServices();
   });
@@ -7,7 +7,7 @@ describe('Scenario 5', () => {
     cy.get('input[data-cy="searchBar"]').type('ergonomic');
   });
 
-  it(' check length items', () => {
+  it('check length items', () => {
     cy.get('.kong-card.card.border').should('have.length', 6);
   });
 
@@ -21,7 +21,7 @@ describe('Scenario 5', () => {
     cy.get('input[data-cy="searchBar"]').clear();
   });
 
-  it(' check length items', () => {
+  it('check length items', () => {
     cy.get('.kong-card.card.border').should('have.length', 12);
   });
 
